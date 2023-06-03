@@ -8,9 +8,12 @@ include_directories(include)
 
 add_subdirectory(third/mymuduo)
 
-add_library(myhttp library.cpp HttpServer.cc)
+add_library(myhttp HttpServer.cc HttpContext.cc HttpResponse.cc SimpleHttpServer.cc)
 
 target_link_libraries(myhttp mymuduo)
 
-add_executable(test2 test.cc)
-target_link_libraries(test2 myhttp)
+add_executable(http_echo examples/HttpEchoServer.cc)
+target_link_libraries(http_echo myhttp)
+
+add_executable(http_hello examples/HttpHelloServer.cc)
+target_link_libraries(http_hello myhttp)
