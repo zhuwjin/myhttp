@@ -28,6 +28,10 @@ public:
         routers_[router] = cb;
     }
 
+    void setThreadNum(int num_threads) {
+        server_.setThreadNum(num_threads);
+    }
+
 
     void start() {
         server_.start();

@@ -12,8 +12,4 @@ add_library(myhttp HttpServer.cc HttpContext.cc HttpResponse.cc SimpleHttpServer
 
 target_link_libraries(myhttp mymuduo)
 
-add_executable(http_echo examples/HttpEchoServer.cc)
-target_link_libraries(http_echo myhttp)
-
-add_executable(http_hello examples/HttpHelloServer.cc)
-target_link_libraries(http_hello myhttp)
+add_subdirectory(examples)

@@ -1,33 +1,17 @@
 #include "HttpRequest.h"
 #include "HttpResponse.h"
-#include "HttpServer.h"
+#include "SimpleHttpServer.h"
 
-class HttpEchoServer {
-public:
-    HttpEchoServer(EventLoop *loop,
-                   const InetAddress &listen_addr)
-        : server_(loop, listen_addr, "http_echo_server") {
-        server_.setHttpCallback([](const HttpRequest &req, HttpResponse *res) {
-            const std::string &body = req.getBody();
-            res->setStatusCode(HttpResponse::Ok);
-            res->setStatusMessage("Ok");
-            res->setContentType("application/json;charset=UTF-8");
-            res->setBody(body);
-        });
-    }
-    void start() {
-        server_.start();
-    }
-
-private:
-    HttpServer server_;
-};
 
 int main() {
-    EventLoop loop;
-    InetAddress address(8080);
-    HttpEchoServer echo_server(&loop, address);
-    echo_server.start();
-    loop.loop();
+    SimpleHttpServer echo("127.0.0.1", 8080, "echo");
+    echo.setThreadNum(7);
+    echo.addRouter("/", [](const HttpRequest &req, HttpResponse *res) {
+        res->setContentType(req.getHeader("Content-Type"));
+        res->setStatusCode(HttpResponse::Ok);
+        res->setStatusMessage("Ok");
+        res->setBody(req.getBody());
+    });
+    echo.start();
     return 0;
 }

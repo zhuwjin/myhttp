@@ -29,7 +29,7 @@ void hello(const HttpRequest &req, HttpResponse *res) {
 
 int main() {
     SimpleHttpServer hello_server("127.0.0.1", 8080, "hello");
-    hello_server.addRouter("/hello", [](const HttpRequest &req, HttpResponse *res) { hello(req, res); });
+    hello_server.addRouter("/", [](const HttpRequest &req, HttpResponse *res) { hello(req, res); });
     hello_server.start();
     return 0;
 }
